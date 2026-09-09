@@ -1,0 +1,42 @@
+[
+  {
+    "Project ID": "P1",
+    "Project Name": "NRT82",
+    "Site": "NRT",
+    "Project Manager": "Shiraishi",
+    "Task ID": "T1",
+    "Task Name": "Design",
+    "Category": "Engineering",
+    "Start Date": "2026-01-01",
+    "End Date": "2026-01-10",
+    "Progress %": 100,
+    "Status": "COMPLETED",
+    "Resource Count": 1,
+    "Assigned Person": "Shiraishi",
+    "Milestone": false,
+    "Dependency": "",
+    "Priority": "MEDIUM",
+    "Last Updated": "2026-01-10",
+    "Remarks": ""
+  },
+  {
+    "Project ID": "P1",
+    "Project Name": "NRT82",
+    "Site": "NRT",
+    "Project Manager": "Shiraishi",
+    "Task ID": "T2",
+    "Task Name": "T&C",
+    "Category": "T&C",
+    "Start Date": "2026-01-11",
+    "End Date": "2026-01-20",
+    "Progress %": 20,
+    "Status": "IN_PROGRESS",
+    "Resource Count": 2,
+    "Assigned Person": "Shiraishi,Tanaka",
+    "Milestone": true,
+    "Dependency": "T1",
+    "Priority": "HIGH",
+    "Last Updated": "2026-01-15",
+    "Remarks": ""
+  }
+]

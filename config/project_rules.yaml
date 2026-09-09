@@ -1,0 +1,27 @@
+stale_days_warning: 7
+stale_days_high_warning: 14
+upcoming_days: 14
+risk_scoring:
+  delayed_task: 3
+  high_priority_delayed_task: 5
+  milestone_delay: 5
+  resource_conflict: 2
+  stale_over_warning: 2
+  stale_over_high_warning: 4
+  not_started_late: 2
+  validation_error: 2
+risk_level_thresholds:
+  LOW: [0, 2]
+  MEDIUM: [3, 6]
+  HIGH: [7, 10]
+  CRITICAL: [11, 9999]
+important_categories:
+  - NEA
+  - T&C
+  - Testing
+  - Commissioning
+  - Handover
+  - PC
+  - Go Live
+  - Delivery
+  - Installation Complete

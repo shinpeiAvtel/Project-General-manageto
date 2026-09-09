@@ -1,0 +1,41 @@
+required_columns:
+  - Project ID
+  - Project Name
+  - Site
+  - Project Manager
+  - Task ID
+  - Task Name
+  - Category
+  - Start Date
+  - End Date
+  - Progress %
+  - Status
+  - Resource Count
+  - Assigned Person
+  - Milestone
+  - Dependency
+  - Priority
+  - Last Updated
+  - Remarks
+optional_columns:
+  - Client
+  - Region
+  - Phase
+  - Vendor
+  - Subcontractor
+  - Planned Start
+  - Planned Finish
+  - Actual Start
+  - Actual Finish
+  - Baseline Progress
+  - Actual Progress
+  - T&C Date
+  - Handover Date
+  - Risk Level
+allowed_status:
+  - NOT_STARTED
+  - IN_PROGRESS
+  - ON_HOLD
+  - COMPLETED
+  - DELAYED
+date_format: "%Y-%m-%d"

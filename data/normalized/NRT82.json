@@ -1,0 +1,53 @@
+[
+  {
+    "project_id": "P1",
+    "project_name": "NRT82",
+    "site": "NRT",
+    "project_manager": "Shiraishi",
+    "task_id": "T1",
+    "task_name": "Design",
+    "category": "Engineering",
+    "start_date": "2026-01-01",
+    "end_date": "2026-01-10",
+    "progress": 100.0,
+    "status": "COMPLETED",
+    "resource_count": 1,
+    "assigned_person": [
+      "Shiraishi"
+    ],
+    "milestone": false,
+    "dependency": [],
+    "priority": "MEDIUM",
+    "last_updated": "2026-01-10",
+    "remarks": "MISSING",
+    "source_file": "/home/runner/work/Project-General-manageto/Project-General-manageto/Input/Shiraishi/NRT82/NRT82_schedule.xlsx",
+    "source_sheet": "Schedule"
+  },
+  {
+    "project_id": "P1",
+    "project_name": "NRT82",
+    "site": "NRT",
+    "project_manager": "Shiraishi",
+    "task_id": "T2",
+    "task_name": "T&C",
+    "category": "T&C",
+    "start_date": "2026-01-11",
+    "end_date": "2026-01-20",
+    "progress": 20.0,
+    "status": "IN_PROGRESS",
+    "resource_count": 2,
+    "assigned_person": [
+      "Shiraishi",
+      "Tanaka"
+    ],
+    "milestone": true,
+    "dependency": [
+      "T1"
+    ],
+    "priority": "HIGH",
+    "last_updated": "2026-01-15",
+    "remarks": "MISSING",
+    "source_file": "/home/runner/work/Project-General-manageto/Project-General-manageto/Input/Shiraishi/NRT82/NRT82_schedule.xlsx",
+    "source_sheet": "Schedule"
+  }
+]

@@ -1,0 +1,89 @@
+{
+  "generated_at": "2026-09-09T07:56:27Z",
+  "project_summary": [
+    {
+      "project_name": "NRT82",
+      "project_manager": "Shiraishi",
+      "start_date": "2026-01-01",
+      "end_date": "2026-01-20",
+      "total_tasks": 2,
+      "completed_tasks": 1,
+      "progress": 50.0,
+      "delayed_tasks": 1,
+      "milestones": 1,
+      "last_updated_days_ago": 237,
+      "update_status": "HIGH WARNING",
+      "risk_score": 17,
+      "risk_level": "CRITICAL",
+      "validation_errors": 0,
+      "not_started_late": 0,
+      "resource_conflict_count": 0
+    }
+  ],
+  "delayed_tasks": [
+    {
+      "project_id": "P1",
+      "project_name": "NRT82",
+      "site": "NRT",
+      "project_manager": "Shiraishi",
+      "task_id": "T2",
+      "task_name": "T&C",
+      "category": "T&C",
+      "start_date": "2026-01-11",
+      "end_date": "2026-01-20",
+      "progress": 20.0,
+      "status": "IN_PROGRESS",
+      "resource_count": 2,
+      "assigned_person": [
+        "Shiraishi",
+        "Tanaka"
+      ],
+      "milestone": true,
+      "dependency": [
+        "T1"
+      ],
+      "priority": "HIGH",
+      "last_updated": "2026-01-15",
+      "remarks": "MISSING",
+      "source_file": "/home/runner/work/Project-General-manageto/Project-General-manageto/Input/Shiraishi/NRT82/NRT82_schedule.xlsx",
+      "source_sheet": "Schedule",
+      "days_remaining": -232,
+      "delay_status": "DELAYED"
+    }
+  ],
+  "not_started_late_tasks": [],
+  "milestones": [
+    {
+      "project_id": "P1",
+      "project_name": "NRT82",
+      "site": "NRT",
+      "project_manager": "Shiraishi",
+      "task_id": "T2",
+      "task_name": "T&C",
+      "category": "T&C",
+      "start_date": "2026-01-11",
+      "end_date": "2026-01-20",
+      "progress": 20.0,
+      "status": "IN_PROGRESS",
+      "resource_count": 2,
+      "assigned_person": [
+        "Shiraishi",
+        "Tanaka"
+      ],
+      "milestone": true,
+      "dependency": [
+        "T1"
+      ],
+      "priority": "HIGH",
+      "last_updated": "2026-01-15",
+      "remarks": "MISSING",
+      "source_file": "/home/runner/work/Project-General-manageto/Project-General-manageto/Input/Shiraishi/NRT82/NRT82_schedule.xlsx",
+      "source_sheet": "Schedule",
+      "days_remaining": -232,
+      "delay_status": "DELAYED"
+    }
+  ],
+  "milestone_candidates": [],
+  "resource_conflicts": [],
+  "upcoming_14_days": []
+}
