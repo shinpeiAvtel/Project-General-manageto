@@ -1,0 +1,46 @@
+required_headers:
+  - Project ID
+  - Project Name
+  - Site
+  - Project Manager
+  - Task ID
+  - Task Name
+  - Category
+  - Start Date
+  - End Date
+  - Progress %
+  - Status
+  - Resource Count
+  - Assigned Person
+  - Milestone
+  - Dependency
+  - Priority
+  - Last Updated
+  - Remarks
+recommended_headers:
+  - Client
+  - Region
+  - Phase
+  - Vendor
+  - Subcontractor
+  - Planned Start
+  - Planned Finish
+  - Actual Start
+  - Actual Finish
+  - Baseline Progress
+  - Actual Progress
+  - T&C Date
+  - Handover Date
+  - Risk Level
+required_fields_for_validation:
+  - Project Name
+  - Task Name
+  - Start Date
+  - End Date
+allowed_status:
+  - NOT_STARTED
+  - IN_PROGRESS
+  - BLOCKED
+  - COMPLETED
+  - ON_HOLD
+  - DELAYED
