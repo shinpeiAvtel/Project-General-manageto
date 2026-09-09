@@ -1,0 +1,61 @@
+name: Schedule Analysis
+
+on:
+  push:
+    paths:
+      - 'Input/**/*.xlsx'
+      - 'scripts/**'
+      - 'config/**'
+      - 'tests/**'
+      - '.github/workflows/schedule-analysis.yml'
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Excel scan
+        run: python scripts/scan_input.py
+
+      - name: Validation
+        run: |
+          python scripts/import_excel.py
+          python scripts/validate_schedule.py
+
+      - name: Normalization
+        run: python scripts/normalize_schedule.py
+
+      - name: Analysis
+        run: python scripts/analyze_schedule.py
+
+      - name: Master Schedule generation
+        run: python scripts/generate_master_schedule.py
+
+      - name: Report generation
+        run: python scripts/generate_reports.py
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: schedule-output
+          path: |
+            Output/Master_Schedule/Master_Schedule.xlsx
+            Output/Reports/Upcoming_14_Days.xlsx
+            Output/Reports/Manager_Summary.md
+            Output/Reports/Validation_Report.json

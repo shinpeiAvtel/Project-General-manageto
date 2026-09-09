@@ -1,0 +1,26 @@
+stale_update_threshold_days:
+  warning: 7
+  high_warning: 14
+risk_weights:
+  delayed_task: 3
+  high_priority_delayed_task: 5
+  milestone_delay: 5
+  resource_conflict: 2
+  stale_warning: 2
+  stale_high_warning: 4
+  not_started_late: 2
+  validation_error: 2
+risk_level_thresholds:
+  low_max: 2
+  medium_max: 6
+  high_max: 10
+milestone_categories:
+  - NEA
+  - T&C
+  - Testing
+  - Commissioning
+  - Handover
+  - PC
+  - Go Live
+  - Delivery
+  - Installation Complete
