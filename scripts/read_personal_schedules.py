@@ -26,6 +26,17 @@ KNOWN_FIELDS = [
     "last_updated",
 ]
 
+REQUIRED_FIELDS = {
+    "date",
+    "project",
+    "site",
+    "schedule_task",
+    "start_time",
+    "end_time",
+    "status",
+    "remarks",
+}
+
 
 def read_personal_schedules(input_path: str | Path | None = None, config_path: str | Path | None = None) -> dict[str, Any]:
     config = load_schedule_config(config_path)
@@ -33,6 +44,7 @@ def read_personal_schedules(input_path: str | Path | None = None, config_path: s
     workbook = load_workbook(workbook_path, data_only=True)
     detected_personal_sheets: list[str] = []
     records: list[dict[str, Any]] = []
+    sheet_issues: list[dict[str, Any]] = []
 
     for sheet_name in workbook.sheetnames:
         if not is_personal_sheet(sheet_name):
@@ -44,6 +56,19 @@ def read_personal_schedules(input_path: str | Path | None = None, config_path: s
             if canonical:
                 header_map[canonical] = column_index
         detected_personal_sheets.append(sheet_name)
+        missing_required_headers = sorted(REQUIRED_FIELDS - set(header_map))
+        if missing_required_headers:
+            sheet_issues.append(
+                {
+                    "severity": "ERROR",
+                    "code": "MISSING_REQUIRED_HEADERS",
+                    "message": f"Missing required columns: {', '.join(missing_required_headers)}.",
+                    "person": normalise_text(sheet_name),
+                    "source_sheet": sheet_name,
+                    "source_row": 1,
+                }
+            )
+            continue
         for row_index in range(2, worksheet.max_row + 1):
             raw_record = {field: None for field in KNOWN_FIELDS}
             for field, column_index in header_map.items():
@@ -63,6 +88,7 @@ def read_personal_schedules(input_path: str | Path | None = None, config_path: s
     return {
         "records": records,
         "detected_personal_sheets": detected_personal_sheets,
+        "sheet_issues": sheet_issues,
         "all_sheet_names": workbook.sheetnames,
         "input_workbook": str(workbook_path),
     }

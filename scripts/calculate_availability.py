@@ -3,7 +3,16 @@ from __future__ import annotations
 from collections import defaultdict
 from datetime import date
 
-from .utils import daterange, overlap_minutes, record_interval_minutes, workday_minutes
+from .utils import daterange, overlap_minutes, parse_excel_date, record_interval_minutes, workday_minutes
+
+
+def parse_config_date(value: str | None, field_name: str) -> date | None:
+    if value in (None, ""):
+        return None
+    parsed = parse_excel_date(value)
+    if not parsed:
+        raise ValueError(f"Configured {field_name} must be a valid date value.")
+    return parsed
 
 
 def calculate_availability(records: list[dict], config: dict) -> list[dict]:
@@ -15,10 +24,10 @@ def calculate_availability(records: list[dict], config: dict) -> list[dict]:
     if not dated_records:
         return []
 
-    configured_start = config["availability"].get("start_date")
-    configured_end = config["availability"].get("end_date")
-    start_date = date.fromisoformat(configured_start) if configured_start else min(record["date"] for record in dated_records)
-    end_date = date.fromisoformat(configured_end) if configured_end else max(record["date"] for record in dated_records)
+    configured_start = parse_config_date(config["availability"].get("start_date"), "availability.start_date")
+    configured_end = parse_config_date(config["availability"].get("end_date"), "availability.end_date")
+    start_date = configured_start or min(record["date"] for record in dated_records)
+    end_date = configured_end or max(record["date"] for record in dated_records)
     work_start, work_end = workday_minutes(config)
     work_interval = (work_start, work_end)
     total_work_minutes = work_end - work_start

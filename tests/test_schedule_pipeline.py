@@ -81,6 +81,21 @@ def test_read_personal_schedules_excludes_system_sheets(tmp_path):
     payload = read_personal_schedules(workbook_path)
     assert payload["detected_personal_sheets"] == ["Shiraishi", "Tanaka", "Suzuki"]
     assert len(payload["records"]) == 15
+    assert payload["sheet_issues"] == []
+
+
+def test_reader_reports_missing_required_headers(tmp_path):
+    workbook = Workbook()
+    worksheet = workbook.active
+    worksheet.title = "Shiraishi"
+    worksheet.append(["Date", "Project", "Site"])
+    worksheet.append(["2026-09-10", "Project A", "Site A"])
+    workbook_path = tmp_path / "missing_headers.xlsx"
+    workbook.save(workbook_path)
+
+    payload = read_personal_schedules(workbook_path)
+    assert payload["records"] == []
+    assert payload["sheet_issues"][0]["code"] == "MISSING_REQUIRED_HEADERS"
 
 
 def test_validation_flags_invalid_rows_and_keeps_valid_rows():
@@ -172,3 +187,38 @@ query:
     assert conflicts.cell(row=3, column=1).value == "Shiraishi"
     availability = workbook["04_Availability"]
     assert any(availability.cell(row=row, column=3).value == "LEAVE" for row in range(3, availability.max_row + 1))
+
+
+def test_end_to_end_invalid_config_dates_raise_clear_error(tmp_path, monkeypatch):
+    repo_root = tmp_path
+    for relative in ["Input", "Output", "data", "config"]:
+        (repo_root / relative).mkdir(parents=True, exist_ok=True)
+    create_sample_workbook(repo_root / "Input" / "Personal_Schedule.xlsx")
+    (repo_root / "config" / "schedule_config.yaml").write_text(
+        """
+workbook:
+  input_path: Input/Personal_Schedule.xlsx
+  output_path: Output/Master_Schedule.xlsx
+  normalized_json_path: data/normalized_schedule.json
+  validation_report_path: data/validation_report.json
+workday:
+  start: \"09:00\"
+  end: \"18:00\"
+availability:
+  start_date: \"2026/09/10\"
+  end_date: \"not-a-date\"
+query:
+  base_date: \"2026-09-10\"
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr("scripts.utils.repo_root", lambda: repo_root)
+    monkeypatch.setattr("scripts.read_personal_schedules.repo_root", lambda: repo_root)
+    monkeypatch.setattr("scripts.validate_schedule.repo_root", lambda: repo_root)
+    monkeypatch.setattr("scripts.build_master_schedule.repo_root", lambda: repo_root)
+
+    try:
+        build_output_artifacts(repo_root / "config" / "schedule_config.yaml")
+        assert False, "Expected build_output_artifacts to fail on invalid config dates."
+    except ValueError as exc:
+        assert "availability.end_date" in str(exc)

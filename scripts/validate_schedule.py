@@ -123,6 +123,7 @@ def run_validation(config_path: str | Path | None = None) -> dict[str, Any]:
 
     payload = read_personal_schedules(input_path, config_path=config_path)
     records, issues = validate_records(payload["records"])
+    issues = payload.get("sheet_issues", []) + issues
     save_json(
         normalized_path,
         {

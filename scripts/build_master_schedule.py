@@ -17,6 +17,7 @@ from .utils import (
     apply_status_formatting,
     apply_table_style,
     load_schedule_config,
+    parse_excel_date,
     record_sort_key,
     repo_root,
     replace_sheet,
@@ -155,7 +156,10 @@ def build_output_artifacts(config_path: str | Path | None = None) -> dict[str, A
     availability_rows = calculate_availability(records, config)
 
     base_date_value = config["query"].get("base_date")
-    base_date = date.fromisoformat(base_date_value) if base_date_value else date.today()
+    parsed_base_date = parse_excel_date(base_date_value) if base_date_value else None
+    if base_date_value and not parsed_base_date:
+        raise ValueError("Configured query.base_date must be a valid date value.")
+    base_date = parsed_base_date or date.today()
 
     workbook = Workbook()
     workbook.remove(workbook.active)
