@@ -159,7 +159,10 @@ def build_output_artifacts(config_path: str | Path | None = None) -> dict[str, A
     parsed_base_date = parse_excel_date(base_date_value) if base_date_value else None
     if base_date_value and not parsed_base_date:
         raise ValueError("Configured query.base_date must be a valid date value.")
-    base_date = parsed_base_date or date.today()
+    dated_records = [record["date"] for record in records if record.get("date")]
+    availability_start = config["availability"].get("start_date")
+    parsed_availability_start = parse_excel_date(availability_start) if availability_start else None
+    base_date = parsed_base_date or parsed_availability_start or (min(dated_records) if dated_records else date.today())
 
     workbook = Workbook()
     workbook.remove(workbook.active)

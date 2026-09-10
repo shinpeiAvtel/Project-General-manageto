@@ -205,7 +205,7 @@ workday:
   start: \"09:00\"
   end: \"18:00\"
 availability:
-  start_date: \"2026/09/10\"
+  start_date: \"2026-09-10\"
   end_date: \"not-a-date\"
 query:
   base_date: \"2026-09-10\"
@@ -222,3 +222,17 @@ query:
         assert False, "Expected build_output_artifacts to fail on invalid config dates."
     except ValueError as exc:
         assert "availability.end_date" in str(exc)
+
+
+def test_availability_rejects_inverted_config_range():
+    config = load_schedule_config()
+    config["availability"]["start_date"] = "2026-09-20"
+    config["availability"]["end_date"] = "2026-09-10"
+    records = [
+        {"person": "Shiraishi", "date": date(2026, 9, 10), "schedule_task": "Task", "project": "P1", "start_time": None, "end_time": None, "all_day": True, "status": "Confirmed", "source_sheet": "Shiraishi", "source_row": 2},
+    ]
+    try:
+        calculate_availability(records, config)
+        assert False, "Expected calculate_availability to fail on inverted config range."
+    except ValueError as exc:
+        assert "start_date" in str(exc)

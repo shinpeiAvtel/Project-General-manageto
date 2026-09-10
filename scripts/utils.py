@@ -150,12 +150,10 @@ def parse_excel_date(value: Any) -> date | None:
     if isinstance(value, date):
         return value
     text = normalise_text(value)
-    for fmt in ("%Y-%m-%d", "%Y/%m/%d", "%Y.%m.%d"):
-        try:
-            return datetime.strptime(text, fmt).date()
-        except ValueError:
-            continue
-    return None
+    try:
+        return datetime.strptime(text, "%Y-%m-%d").date()
+    except ValueError:
+        return None
 
 
 def parse_excel_time(value: Any) -> time | None:

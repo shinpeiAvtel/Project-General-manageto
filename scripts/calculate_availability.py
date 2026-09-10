@@ -28,6 +28,8 @@ def calculate_availability(records: list[dict], config: dict) -> list[dict]:
     configured_end = parse_config_date(config["availability"].get("end_date"), "availability.end_date")
     start_date = configured_start or min(record["date"] for record in dated_records)
     end_date = configured_end or max(record["date"] for record in dated_records)
+    if start_date > end_date:
+        raise ValueError("Configured availability date range must have start_date on or before end_date.")
     work_start, work_end = workday_minutes(config)
     work_interval = (work_start, work_end)
     total_work_minutes = work_end - work_start
