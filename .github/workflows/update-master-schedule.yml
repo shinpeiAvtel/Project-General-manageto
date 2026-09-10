@@ -5,7 +5,6 @@ on:
     paths:
       - 'Input/Personal_Schedule.xlsx'
       - 'scripts/**'
-      - 'config/**'
       - 'tests/**'
       - 'requirements.txt'
       - '.github/workflows/update-master-schedule.yml'
@@ -28,17 +27,18 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Create sample input only when missing
-        run: |
-          if [ ! -f Input/Personal_Schedule.xlsx ]; then
-            python scripts/create_input_workbook.py
-          fi
-
-      - name: Build schedule workbook
-        run: python scripts/build_schedule.py
+      - name: Create calendar input and build master
+        run: python scripts/calendar_schedule.py
 
       - name: Run tests
         run: pytest -q
+
+      - name: Upload calendar input
+        uses: actions/upload-artifact@v4
+        with:
+          name: Personal-Schedule-Calendar
+          path: Input/Personal_Schedule.xlsx
+          if-no-files-found: error
 
       - name: Upload generated master schedule
         uses: actions/upload-artifact@v4

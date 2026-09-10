@@ -1,43 +1,33 @@
-from datetime import date, time
+from datetime import date
+from pathlib import Path
 
-from scripts.build_schedule import detect_conflicts, normalize_date, normalize_time
+from openpyxl import Workbook
 
-
-def test_normalize_date():
-    assert normalize_date("2026-09-10") == date(2026, 9, 10)
-    assert normalize_date("bad") is None
+from scripts.calendar_schedule import _minutes, detect_conflicts, parse_calendar_sheet, build_calendar_sheet
 
 
-def test_normalize_time():
-    assert normalize_time("09:30") == time(9, 30)
-    assert normalize_time("25:00") is None
+def test_minutes_parser():
+    assert _minutes('09:00-17:00') == (540, 1020)
+    assert _minutes('ALL DAY') is None
+    assert _minutes('bad') is None
 
 
-def test_detect_conflict():
-    records = [
-        {
-            "date": date(2026, 9, 16), "person": "A", "project": "P1", "task": "Task1",
-            "start": time(10, 0), "end": time(16, 0), "status": "Planned", "all_day": False,
-        },
-        {
-            "date": date(2026, 9, 16), "person": "A", "project": "P2", "task": "Task2",
-            "start": time(15, 0), "end": time(17, 0), "status": "Planned", "all_day": False,
-        },
-    ]
+def test_calendar_parse_and_conflict():
+    wb = Workbook()
+    ws = wb.active
+    ws.title = 'Tester'
+    build_calendar_sheet(ws, 'Tester', 2026, 9)
+    # 2026-09-16 is in week block starting row 15, Wednesday = G:I, slots rows 16-18
+    ws['G16'] = '10:00-16:00'
+    ws['H16'] = 'Project A'
+    ws['I16'] = 'T&C'
+    ws['G17'] = '15:00-17:00'
+    ws['H17'] = 'Project B'
+    ws['I17'] = 'Design Review'
+    records = parse_calendar_sheet(ws)
+    assert len(records) == 2
+    assert records[0]['person'] == 'Tester'
+    assert records[0]['date'] == date(2026, 9, 16)
     conflicts = detect_conflicts(records)
     assert len(conflicts) == 1
-    assert conflicts[0][-1] == "TIME_OVERLAP"
-
-
-def test_no_conflict_for_different_person():
-    records = [
-        {
-            "date": date(2026, 9, 16), "person": "A", "project": "P1", "task": "Task1",
-            "start": time(10, 0), "end": time(16, 0), "status": "Planned", "all_day": False,
-        },
-        {
-            "date": date(2026, 9, 16), "person": "B", "project": "P2", "task": "Task2",
-            "start": time(15, 0), "end": time(17, 0), "status": "Planned", "all_day": False,
-        },
-    ]
-    assert detect_conflicts(records) == []
+    assert conflicts[0][0] == 'Tester'
