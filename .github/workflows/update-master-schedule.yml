@@ -1,0 +1,53 @@
+name: Update Master Schedule
+
+on:
+  push:
+    paths:
+      - 'Input/Personal_Schedule.xlsx'
+      - 'scripts/**'
+      - 'config/**'
+      - 'tests/**'
+      - 'requirements.txt'
+  workflow_dispatch:
+
+jobs:
+  build-master-schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate
+        run: python -m scripts.validate_schedule
+
+      - name: Normalize and Build Master
+        run: python -m scripts.build_master_schedule
+
+      - name: Build Monthly View
+        run: python -m scripts.build_monthly_view
+
+      - name: Build Weekly View
+        run: python -m scripts.build_weekly_view
+
+      - name: Detect Conflicts
+        run: python -m scripts.detect_conflicts
+
+      - name: Calculate Availability
+        run: python -m scripts.calculate_availability
+
+      - name: Run Tests
+        run: pytest
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: master-schedule-workbook
+          path: Output/Master_Schedule.xlsx

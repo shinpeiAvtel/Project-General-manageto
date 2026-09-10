@@ -1,0 +1,13 @@
+workbook:
+  input_path: Input/Personal_Schedule.xlsx
+  output_path: Output/Master_Schedule.xlsx
+  normalized_json_path: data/normalized_schedule.json
+  validation_report_path: data/validation_report.json
+workday:
+  start: "09:00"
+  end: "18:00"
+availability:
+  start_date: null
+  end_date: null
+query:
+  base_date: null
