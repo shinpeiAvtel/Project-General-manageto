@@ -28,6 +28,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Create sample input only when missing
+        run: |
+          if [ ! -f Input/Personal_Schedule.xlsx ]; then
+            python scripts/create_input_workbook.py
+          fi
+
       - name: Build schedule workbook
         run: python scripts/build_schedule.py
 
