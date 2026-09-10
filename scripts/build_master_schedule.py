@@ -170,7 +170,7 @@ def build_output_artifacts(config_path: str | Path | None = None) -> dict[str, A
     workbook.save(output_path)
 
     save_json(
-        repo_root() / "data" / "build_summary.json",
+        repo_root() / config["workbook"]["summary_json_path"],
         {
             "generated_at": date.today().isoformat(),
             "input_workbook": config["workbook"]["input_path"],

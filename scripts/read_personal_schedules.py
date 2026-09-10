@@ -27,8 +27,8 @@ KNOWN_FIELDS = [
 ]
 
 
-def read_personal_schedules(input_path: str | Path | None = None) -> dict[str, Any]:
-    config = load_schedule_config()
+def read_personal_schedules(input_path: str | Path | None = None, config_path: str | Path | None = None) -> dict[str, Any]:
+    config = load_schedule_config(config_path)
     workbook_path = Path(input_path) if input_path else repo_root() / config["workbook"]["input_path"]
     workbook = load_workbook(workbook_path, data_only=True)
     detected_personal_sheets: list[str] = []

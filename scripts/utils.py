@@ -110,6 +110,7 @@ def load_schedule_config(config_path: str | Path | None = None) -> dict[str, Any
     config["workbook"].setdefault("output_path", "Output/Master_Schedule.xlsx")
     config["workbook"].setdefault("normalized_json_path", "data/normalized_schedule.json")
     config["workbook"].setdefault("validation_report_path", "data/validation_report.json")
+    config["workbook"].setdefault("summary_json_path", "data/build_summary.json")
     config["workday"].setdefault("start", "09:00")
     config["workday"].setdefault("end", "18:00")
     config["query"].setdefault("base_date", None)

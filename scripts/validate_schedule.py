@@ -121,7 +121,7 @@ def run_validation(config_path: str | Path | None = None) -> dict[str, Any]:
     normalized_path = repo_root() / config["workbook"]["normalized_json_path"]
     validation_path = repo_root() / config["workbook"]["validation_report_path"]
 
-    payload = read_personal_schedules(input_path)
+    payload = read_personal_schedules(input_path, config_path=config_path)
     records, issues = validate_records(payload["records"])
     save_json(
         normalized_path,

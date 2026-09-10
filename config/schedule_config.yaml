@@ -3,6 +3,7 @@ workbook:
   output_path: Output/Master_Schedule.xlsx
   normalized_json_path: data/normalized_schedule.json
   validation_report_path: data/validation_report.json
+  summary_json_path: data/build_summary.json
 workday:
   start: "09:00"
   end: "18:00"
