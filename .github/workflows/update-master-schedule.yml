@@ -27,14 +27,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Run Tests
+        run: pytest
+
       - name: Validate
         run: python -m scripts.validate_schedule
 
       - name: Normalize and Build Master, Monthly, Weekly, Conflict, Availability
         run: python -m scripts.build_master_schedule
-
-      - name: Run Tests
-        run: pytest
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

@@ -67,8 +67,8 @@ def validate_records(raw_records: list[dict[str, Any]]) -> tuple[list[dict[str, 
             record_issues.append(build_issue(raw_record, "ERROR", "INVALID_END_TIME", "End Time must use HH:MM."))
         if ((parsed_start_time and not parsed_end_time) or (parsed_end_time and not parsed_start_time)) and not all_day:
             record_issues.append(build_issue(raw_record, "ERROR", "INVALID_TIME", "Start Time and End Time must both be present for timed schedules."))
-        if parsed_start_time and parsed_end_time and parsed_start_time > parsed_end_time:
-            record_issues.append(build_issue(raw_record, "ERROR", "TIME_ORDER", "Start Time cannot be after End Time."))
+        if parsed_start_time and parsed_end_time and parsed_start_time >= parsed_end_time:
+            record_issues.append(build_issue(raw_record, "ERROR", "TIME_ORDER", "Start Time must be earlier than End Time."))
         if status and status not in VALID_STATUSES:
             record_issues.append(build_issue(raw_record, "WARNING", "UNKNOWN_STATUS", f"Unknown Status '{status}'."))
 

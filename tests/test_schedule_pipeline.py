@@ -102,6 +102,7 @@ def test_validation_flags_invalid_rows_and_keeps_valid_rows():
     raw_records = [
         {"person": "Shiraishi", "source_sheet": "Shiraishi", "source_row": 2, "schedule_task": "Task", "date": "2026-09-10", "project": "P", "site": "S", "start_time": "09:00", "end_time": "08:00", "status": "Confirmed", "remarks": "", "category": "", "priority": "", "all_day": False, "last_updated": "2026-09-01", "source_workbook": "Personal_Schedule.xlsx"},
         {"person": "", "source_sheet": "Unknown", "source_row": 3, "schedule_task": "", "date": "bad-date", "project": "", "site": "", "start_time": "bad", "end_time": "10:00", "status": "Mystery", "remarks": "", "category": "", "priority": "", "all_day": False, "last_updated": "", "source_workbook": "Personal_Schedule.xlsx"},
+        {"person": "Suzuki", "source_sheet": "Suzuki", "source_row": 5, "schedule_task": "Zero", "date": "2026-09-11", "project": "P", "site": "S", "start_time": "09:00", "end_time": "09:00", "status": "Confirmed", "remarks": "", "category": "", "priority": "", "all_day": False, "last_updated": "", "source_workbook": "Personal_Schedule.xlsx"},
         {"person": "Tanaka", "source_sheet": "Tanaka", "source_row": 4, "schedule_task": "Valid", "date": "2026-09-11", "project": "", "site": "", "start_time": "09:00", "end_time": "10:00", "status": "Confirmed", "remarks": "", "category": "", "priority": "", "all_day": False, "last_updated": "", "source_workbook": "Personal_Schedule.xlsx"},
     ]
     valid_records, issues = validate_records(raw_records)
@@ -236,3 +237,17 @@ def test_availability_rejects_inverted_config_range():
         assert False, "Expected calculate_availability to fail on inverted config range."
     except ValueError as exc:
         assert "start_date" in str(exc)
+
+
+def test_availability_rejects_invalid_workday_order():
+    config = load_schedule_config()
+    config["workday"]["start"] = "18:00"
+    config["workday"]["end"] = "09:00"
+    records = [
+        {"person": "Shiraishi", "date": date(2026, 9, 10), "schedule_task": "Task", "project": "P1", "start_time": None, "end_time": None, "all_day": True, "status": "Confirmed", "source_sheet": "Shiraishi", "source_row": 2},
+    ]
+    try:
+        calculate_availability(records, config)
+        assert False, "Expected calculate_availability to fail on invalid workday ordering."
+    except ValueError as exc:
+        assert "end time" in str(exc)

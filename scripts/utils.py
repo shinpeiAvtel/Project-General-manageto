@@ -228,6 +228,8 @@ def parse_workday(config: dict[str, Any]) -> tuple[time, time]:
     end = parse_excel_time(config["workday"]["end"])
     if not start or not end:
         raise ValueError("Configured workday start/end must be valid HH:MM values.")
+    if end <= start:
+        raise ValueError("Configured workday end time must be later than start time.")
     return start, end
 
 
