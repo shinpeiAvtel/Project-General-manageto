@@ -8,11 +8,14 @@ on:
       - 'config/**'
       - 'tests/**'
       - 'requirements.txt'
+      - '.github/workflows/update-master-schedule.yml'
   workflow_dispatch:
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
