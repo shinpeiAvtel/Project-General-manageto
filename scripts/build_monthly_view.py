@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from .utils import apply_table_style, style_header_row, summarise_record, write_banner
+from .utils import apply_table_style, replace_sheet, style_header_row, summarise_record, write_banner
 
 
 def build_monthly_view_sheet(workbook, records: list[dict], title: str = "01_Monthly_View"):
-    worksheet = workbook.create_sheet(title)
+    worksheet = replace_sheet(workbook, title, 1)
     persons = sorted({record["person"] for record in records if record.get("person")})
     dates = sorted({record["date"] for record in records if record.get("date")})
     write_banner(worksheet, max(2, len(dates) + 1))

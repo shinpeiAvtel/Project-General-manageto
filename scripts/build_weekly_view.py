@@ -3,14 +3,14 @@ from __future__ import annotations
 from collections import defaultdict
 from datetime import date, timedelta
 
-from .utils import apply_table_style, style_header_row, summarise_record, write_banner
+from .utils import apply_table_style, replace_sheet, style_header_row, summarise_record, write_banner
 
 
 WEEKDAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 
 def build_weekly_view_sheet(workbook, records: list[dict], base_date: date, title: str = "02_Weekly_View"):
-    worksheet = workbook.create_sheet(title)
+    worksheet = replace_sheet(workbook, title, 2)
     persons = sorted({record["person"] for record in records if record.get("person")})
     grouped = defaultdict(list)
     for record in records:

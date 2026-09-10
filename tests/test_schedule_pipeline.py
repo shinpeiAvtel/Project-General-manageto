@@ -188,6 +188,8 @@ query:
     assert conflicts.cell(row=3, column=1).value == "Shiraishi"
     availability = workbook["04_Availability"]
     assert any(availability.cell(row=row, column=3).value == "LEAVE" for row in range(3, availability.max_row + 1))
+    second_result = build_output_artifacts(repo_root / "config" / "schedule_config.yaml")
+    assert len(second_result["records"]) == 15
 
 
 def test_end_to_end_invalid_config_dates_raise_clear_error(tmp_path, monkeypatch):
