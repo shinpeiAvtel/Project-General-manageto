@@ -1,0 +1,26 @@
+system_sheets:
+  - 00_Master_Schedule
+  - 01_Monthly_View
+  - 02_Weekly_View
+  - 03_Conflict_Report
+  - 04_Availability
+  - Template
+  - Config
+
+workday:
+  start: "09:00"
+  end: "18:00"
+
+statuses:
+  - Planned
+  - Confirmed
+  - Completed
+  - Cancelled
+  - Leave
+
+availability:
+  full_day_minutes: 540
+  partial_if_booked_minutes_gte: 1
+
+output:
+  filename: "Output/Master_Schedule.xlsx"
